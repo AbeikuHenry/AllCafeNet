@@ -1,6 +1,7 @@
 const express = require('express');
 const axios = require('axios');
 const RouterOSAPI = require('node-routeros').RouterOSAPI;
+const { Routeros } = require("routeros-node");
 require('dotenv').config(); // Load environment variables
 
 const app = express();
@@ -13,34 +14,41 @@ app.get('/', (req, res) => {
 });
 
 app.post('/verify-payment', async (req, res) => {
-  const reference = req.body.reference;
+  // const reference = req.body.reference;
 
   try {
     // Verify payment with Paystack API
-    const paystackResponse = await axios({
-      url: `https://api.paystack.co/transaction/verify/${reference}`,
-      method: 'GET',
-      headers: {
-        Authorization: `Bearer ${process.env.PAYSTACK_SECRET_KEY}`
-      }
-    });
+    // const paystackResponse = await axios({
+    //   url: `https://api.paystack.co/transaction/verify/${reference}`,
+    //   method: 'GET',
+    //   headers: {
+    //     Authorization: `Bearer ${process.env.PAYSTACK_SECRET_KEY}`
+    //   }
+    // });
 
-    const transactionData = paystackResponse.data.data;
-    const amount = transactionData.amount;
-    const customerEmail = transactionData.customer.email;
+    // const transactionData = paystackResponse.data.data;
+    // const amount = transactionData.amount;
+    // const customerEmail = transactionData.customer.email;
 
     // Mikrotik User Creation
     const username = Math.random().toString(36).substring(2, 10);
     const password = Math.random().toString(36).substring(2, 10);
 
-    const api = new RouterOSAPI({
+    const api = new Routeros({
       host: process.env.MIKROTIK_HOST,
       user: process.env.MIKROTIK_USER,
       password: process.env.MIKROTIK_PASSWORD,
       port: 8728
     });
 
-    await api.connect();
+    try {
+      const conn = await api.connect();
+      console.log('Connected to Mikrotik:', conn);
+    } catch (error) {
+      console.error('Failed to connect to Mikrotik:', error);
+      return res.status(500).send('Failed to connect to Mikrotik');
+    }
+    // await api.connect();
 
     await api.write('/ip/hotspot/user/add', {
       name: username,
