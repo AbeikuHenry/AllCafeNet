@@ -31,7 +31,9 @@ app.post('/verify-payment', async (req, res) => {
     // const customerEmail = transactionData.customer.email;
 
     // Mikrotik User Creation
-    const username = Math.random().toString(36).substring(2, 10);
+    // const username = Math.random().toString(36).substring(2, 10);
+    // const password = Math.random().toString(36).substring(2, 10);
+    const username = "ernest-test";
     const password = Math.random().toString(36).substring(2, 10);
 
     const api = new Routeros({
@@ -50,10 +52,17 @@ app.post('/verify-payment', async (req, res) => {
     }
     // await api.connect();
 
-    await api.write('/ip/hotspot/user/add', {
-      name: username,
-      password: password
-    });
+    // await api.write('/ip/hotspot/user/add', {
+    //   name: username,
+    //   password: password
+    // });
+    try {
+      await api.write(['/ip/hotspot/user/add', `=name=${username}`, `=password=${password}`]);
+      console.log(`User created: ${username} with password: ${password}`);
+    } catch (error) {
+      console.error('Failed to create user:', error);
+      return res.status(500).send('Failed to create user on Mikrotik');
+    }
 
     api.close();
 
