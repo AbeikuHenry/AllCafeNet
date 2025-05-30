@@ -45,7 +45,14 @@ app.post('/verify-payment', async (req, res) => {
 
     try {
       const conn = await api.connect();
-      console.log('Connected to Mikrotik:', conn);
+      console.log('Connected to Mikrotik');
+      try {
+        await conn.write(['/ip/hotspot/user/add', `=name=${username}`, `=password=${password}`]);
+        console.log(`User created: ${username} with password: ${password}`);
+      } catch (error) {
+        console.error('Failed to create user:', error);
+        return res.status(500).send('Failed to create user on Mikrotik');
+      }
     } catch (error) {
       console.error('Failed to connect to Mikrotik:', error);
       return res.status(500).send('Failed to connect to Mikrotik');
@@ -56,15 +63,9 @@ app.post('/verify-payment', async (req, res) => {
     //   name: username,
     //   password: password
     // });
-    try {
-      await api.write(['/ip/hotspot/user/add', `=name=${username}`, `=password=${password}`]);
-      console.log(`User created: ${username} with password: ${password}`);
-    } catch (error) {
-      console.error('Failed to create user:', error);
-      return res.status(500).send('Failed to create user on Mikrotik');
-    }
 
-    api.close();
+
+    api.destroy();
 
     res.json({
       username: username,
