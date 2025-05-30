@@ -59,3 +59,5 @@ This project automates the creation of Mikrotik user accounts after a successful
 
 -   Make sure to replace the placeholder values in the `.env` file with your actual credentials.
 -   This project uses the `node-routeros` library to connect to the Mikrotik router. Make sure your router is configured to allow API connections.
+
+https://resibridge.github.io/mikrotilk-api-extensive/

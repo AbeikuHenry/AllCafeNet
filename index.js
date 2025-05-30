@@ -48,7 +48,7 @@ app.post('/verify-payment', async (req, res) => {
     const conn = await api.connect();
     console.log('Connected to Mikrotik successfully');
 
-    const result = await conn.write(["/ip/hotspot/user/print"]);
+    const result = await conn.write(["/user-manager/user/print"]);
     console.log(`User created: ${result}`);
 
     // await api.connect();
