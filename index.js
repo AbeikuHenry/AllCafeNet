@@ -15,6 +15,12 @@ app.get('/', (req, res) => {
 
 app.post('/verify-payment', async (req, res) => {
   // const reference = req.body.reference;
+  const api = new Routeros({
+    host: process.env.MIKROTIK_HOST,
+    user: process.env.MIKROTIK_USER,
+    password: process.env.MIKROTIK_PASSWORD,
+    port: 8728
+  });
 
   try {
     // Verify payment with Paystack API
@@ -36,24 +42,15 @@ app.post('/verify-payment', async (req, res) => {
     const username = "ernest-test";
     const password = Math.random().toString(36).substring(2, 10);
 
-    const api = new Routeros({
-      host: process.env.MIKROTIK_HOST,
-      user: process.env.MIKROTIK_USER,
-      password: process.env.MIKROTIK_PASSWORD,
-      port: 8728
-    });
 
-    try {
-      const conn = await api.connect();
-      console.log('Connected to Mikrotik');
- 
-      const result = await conn.write('/rest/ip/address/print');
-      console.log(`User created: ${result}`);
 
-    } catch (error) {
-      console.error('Failed to connect to Mikrotik:', error);
-      return res.status(500).send('Failed to connect to Mikrotik');
-    }
+
+    const conn = await api.connect();
+    console.log('Connected to Mikrotik successfully');
+
+    const result = await conn.write(["/ip/hotspot/user/print"]);
+    console.log(`User created: ${result}`);
+
     // await api.connect();
 
     // await api.write('/ip/hotspot/user/add', {
@@ -61,8 +58,6 @@ app.post('/verify-payment', async (req, res) => {
     //   password: password
     // });
 
-
-    api.destroy();
 
     res.json({
       username: username,
@@ -72,6 +67,8 @@ app.post('/verify-payment', async (req, res) => {
   } catch (error) {
     console.error(error);
     res.status(500).send('Payment verification failed');
+  } finally {
+    api.destroy();
   }
 });
 
