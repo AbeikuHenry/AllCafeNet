@@ -1,0 +1,4 @@
+PAYSTACK_SECRET_KEY=sk_test_xxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+MIKROTIK_HOST=your_router_ip
+MIKROTIK_USER=your_router_username
+MIKROTIK_PASSWORD=your_router_password
