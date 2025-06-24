@@ -23,8 +23,6 @@ app.post("/verify-payment", async (req, res) => {
     port: 8728,
   });
 
-  console.log('router created: ', api)
-
   try {
     const conn = await api.connect();
 
