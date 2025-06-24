@@ -14,6 +14,7 @@ app.get("/", (req, res) => {
 });
 
 app.post("/verify-payment", async (req, res) => {
+  console.log("Post request received")
   // const reference = req.body.reference;
   const api = new Routeros({
     host: "100.84.207.47",
@@ -21,6 +22,8 @@ app.post("/verify-payment", async (req, res) => {
     password: "InCAfePaT",
     port: 8728,
   });
+
+  console.log('router created: ', api)
 
   try {
     // Verify payment with Paystack API
