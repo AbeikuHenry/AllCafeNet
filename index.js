@@ -36,6 +36,7 @@ app.post("/verify-payment", async (req, res) => {
       "=password=password",
       "=group=write",
       "=comment=Created via Node.js",
+      ""
     ]);
 
     console.log(`User created: ${result}`);
