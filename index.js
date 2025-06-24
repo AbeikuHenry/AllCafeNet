@@ -26,6 +26,7 @@ app.post("/verify-payment", async (req, res) => {
   try {
     const conn = await api.connect();
     console.log("Connected to Mikrotik successfully");
+    console.log("Status: ", conn.login)
 
     const response = await api.write([
       "/user/print",
