@@ -17,34 +17,15 @@ app.post("/verify-payment", async (req, res) => {
   console.log("Post request received")
   // const reference = req.body.reference;
   const api = new Routeros({
-    host: "100.84.207.47",
-    user: "AllCafeNet",
-    password: "InCAfePaT",
+    host: "192.168.44.73",
+    user: "Abei",
+    password: "Elizabeth1",
     port: 8728,
   });
 
   console.log('router created: ', api)
 
   try {
-    // Verify payment with Paystack API
-    // const paystackResponse = await axios({
-    //   url: `https://api.paystack.co/transaction/verify/${reference}`,
-    //   method: 'GET',
-    //   headers: {
-    //     Authorization: `Bearer ${process.env.PAYSTACK_SECRET_KEY}`
-    //   }
-    // });
-
-    // const transactionData = paystackResponse.data.data;
-    // const amount = transactionData.amount;
-    // const customerEmail = transactionData.customer.email;
-
-    // Mikrotik User Creation
-    // const username = Math.random().toString(36).substring(2, 10);
-    // const password = Math.random().toString(36).substring(2, 10);
-    const username = "ernest-test";
-    const password = Math.random().toString(36).substring(2, 10);
-
     const conn = await api.connect();
 
     console.log("Connected to Mikrotik successfully");
@@ -64,13 +45,32 @@ app.post("/verify-payment", async (req, res) => {
   } finally {
     api.destroy();
   }
-
+  
   res.json({
-    username: username,
-    password: password,
+    username: "username",
+    password: "password",
   });
 });
 
 app.listen(port, () => {
   console.log(`Server listening on port ${port}`);
 });
+
+// Verify payment with Paystack API
+// const paystackResponse = await axios({
+//   url: `https://api.paystack.co/transaction/verify/${reference}`,
+//   method: 'GET',
+//   headers: {
+//     Authorization: `Bearer ${process.env.PAYSTACK_SECRET_KEY}`
+//   }
+// });
+
+// const transactionData = paystackResponse.data.data;
+// const amount = transactionData.amount;
+// const customerEmail = transactionData.customer.email;
+
+// Mikrotik User Creation
+// const username = Math.random().toString(36).substring(2, 10);
+// const password = Math.random().toString(36).substring(2, 10);
+// const username = "ernest-test";
+// const password = Math.random().toString(36).substring(2, 10);
